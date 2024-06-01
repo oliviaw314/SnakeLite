@@ -5,8 +5,6 @@
       <root url="jar://$PROJECT_DIR$/lib/acm.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/spl.jar!/" />
-    </SOURCES>
+    <SOURCES />
   </library>
 </component>
