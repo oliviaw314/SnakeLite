@@ -35,7 +35,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     private boolean isPlaying, isGameOver;
     private int score, highestScore;
     private ArrayList<Integer> allScores = new ArrayList<>();
-    private GLabel scoreLabel, highScoreLabel, gameTitle;
+    private GLabel scoreLabel, highScoreLabel, gameTitle, toStart;
     private GLabel instructions, howToMove, warning;
     private int previousDirection = KeyEvent.VK_LEFT;
     private GRect rectBarrier;
@@ -44,6 +44,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     public void run()
     {
         removeAll();
+        //remove(head);
         try {
             music();
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
@@ -106,7 +107,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     }
 
     public void setUpInfo() {
-        instructions = new GLabel("Welcome to SnakeLite, where you have to chase the ball to grow! Click anywhere on the screen to start", 100, 200);
+        instructions = new GLabel("Welcome to SnakeLite, where you have to chase the ball to grow!", 200, 200);
         instructions.setColor(Color.WHITE);
         add(instructions);
 
@@ -123,13 +124,17 @@ public class MainClass extends GraphicsProgram implements ActionListener
         gameTitle.setColor(Color.YELLOW);
         add(gameTitle,getCanvasWidth()/2-gameTitle.getWidth()/2,30);
 
-        howToMove = new GLabel("Use the up-left-down-right keys to move the snake",215,220);
+        howToMove = new GLabel("Use the up-left-down-right keys to move the snake, the snake's head can't touch any part of its own body!",75,220);
         howToMove.setColor(Color.WHITE);
         add(howToMove);
 
-        warning = new GLabel("*Don't touch the red barriers! They're poisonous!!*",215,240);
+        warning = new GLabel("*Don't touch the red barriers! They're poisonous!!*",220,240);
         warning.setColor(Color.RED);
         add(warning);
+
+        toStart = new GLabel("Click anywhere on the screen to start",260,260);
+        toStart.setColor(Color.WHITE);
+        add(toStart);
 
     }
     public void mouseClicked(MouseEvent e) {
@@ -144,6 +149,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
         instructions.setVisible(false);
         warning.setVisible(false);
         howToMove.setVisible(false);
+        toStart.setVisible(false);
 
         gameTitle.setColor(Color.BLUE);
         timer.start();
@@ -166,13 +172,13 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
     public void drawSnake()
     {
-        head = new SnakePart(250,260,12,12);
+        head = new SnakePart(330,350,12,12);
         head.setFillColor(Color.GREEN);
         head.setFilled(true);
         add(head);
         snakeBody.add(head);
         for (int i=1; i<5; i++) {
-            SnakePart part = new SnakePart(250 + 14*i,260,12,12);
+            SnakePart part = new SnakePart(330 + 14*i,350,12,12);
             part.setFillColor(Color.GREEN);
             part.setFilled(true);
             add(part);
@@ -351,18 +357,21 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
             return;
         }
-        redrawSnake();
 
         if (goingUp) {
+            redrawSnake();
             moveUp();
         }
         else if (goingLeft) {
+            redrawSnake();
             moveLeft();
         }
         else if (goingRight) {
+            redrawSnake();
             moveRight();
         }
         else if (goingDown) {
+            redrawSnake();
             moveDown();
         }
     }
