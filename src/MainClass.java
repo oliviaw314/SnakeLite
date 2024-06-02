@@ -36,7 +36,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     private int score, highestScore;
     private ArrayList<Integer> allScores = new ArrayList<>();
     private GLabel scoreLabel, highScoreLabel, gameTitle;
-    private GLabel instructions, warning;
+    private GLabel instructions, howToMove, warning;
     private int previousDirection = KeyEvent.VK_LEFT;
     private GRect rectBarrier;
 
@@ -123,7 +123,11 @@ public class MainClass extends GraphicsProgram implements ActionListener
         gameTitle.setColor(Color.YELLOW);
         add(gameTitle,getCanvasWidth()/2-gameTitle.getWidth()/2,30);
 
-        warning = new GLabel("*Don't touch the red barriers! They're poisonous!!*",215,220);
+        howToMove = new GLabel("Use the up-left-down-right keys to move the snake",215,220);
+        howToMove.setColor(Color.WHITE);
+        add(howToMove);
+
+        warning = new GLabel("*Don't touch the red barriers! They're poisonous!!*",215,240);
         warning.setColor(Color.RED);
         add(warning);
 
@@ -139,6 +143,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
         instructions.setVisible(false);
         warning.setVisible(false);
+        howToMove.setVisible(false);
 
         gameTitle.setColor(Color.BLUE);
         timer.start();
@@ -392,11 +397,13 @@ public class MainClass extends GraphicsProgram implements ActionListener
     }
 
     public boolean isHighestScore() {
-
+        if (score==0 && allScores.size()==1) {
+            return false;
+        }
+        if (score!=0 && allScores.size()==1) {
+            return true;
+        }
         for (int i=0; i<allScores.size()-1; i++) {
-            if (score!=0 && allScores.size()==1) {
-                return true;
-            }
             if (score <= allScores.get(i)) {
                 return false;
             }
