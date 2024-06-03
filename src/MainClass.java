@@ -244,7 +244,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
     public void keyPressed(KeyEvent keyPressed)
     {
-        blockKey=true; //block key if it's alr presesd
+        blockKey=true; //block key if it's alr pressed
     }
 
 
