@@ -44,7 +44,6 @@ public class MainClass extends GraphicsProgram implements ActionListener
     public void run()
     {
         removeAll();
-        //remove(head);
         try {
             music();
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
@@ -53,7 +52,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
         addKeyListeners();
         setUpInfo();
-
+        ///food initial location
         food = new Ball(50,50,11,11);
         food.setFillColor(Color.YELLOW);
         food.setFilled(true);
@@ -65,6 +64,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     }
 
     public void music() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        //get code to load and play music
         URL resource = getClass().getClassLoader().getResource("music.wav");
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(resource);
        musicClip = AudioSystem.getClip();
@@ -100,6 +100,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     }
 
     public void randomFood() {
+        // generate random location for food
        int randX = (int) (Math.random()*(getGCanvas().getWidth() - food.getWidth()));
        int randY = (int) (Math.random()*(getGCanvas().getHeight() - food.getHeight()));
        food.setLocation(randX, randY);
@@ -139,21 +140,21 @@ public class MainClass extends GraphicsProgram implements ActionListener
     }
     public void mouseClicked(MouseEvent e) {
         if (isGameOver) {
-            isGameOver=false;
+            isGameOver=false; //reset boolean
             run();
         }
         else if (!isPlaying) {
-        randomFood();
-        super.mouseClicked(e);
+            randomFood();
+            super.mouseClicked(e);
+            // make instructions disappear when playing the game
+            instructions.setVisible(false);
+            warning.setVisible(false);
+            howToMove.setVisible(false);
+            toStart.setVisible(false);
 
-        instructions.setVisible(false);
-        warning.setVisible(false);
-        howToMove.setVisible(false);
-        toStart.setVisible(false);
-
-        gameTitle.setColor(Color.BLUE);
-        timer.start();
-        isPlaying=true;
+            gameTitle.setColor(Color.BLUE);
+            timer.start();
+            isPlaying=true;
         }
     }
 
@@ -177,6 +178,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
         head.setFilled(true);
         add(head);
         snakeBody.add(head);
+        // create the snake parts
         for (int i=1; i<5; i++) {
             SnakePart part = new SnakePart(330 + 14*i,350,12,12);
             part.setFillColor(Color.GREEN);
@@ -250,6 +252,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
     private void redrawSnake()
     {
+        //move snake part to the location of the snake part in front of it
         for (int i=snakeBody.size()-1; i>0; i--) {
           snakeBody.get(i).setX(snakeBody.get(i-1).getX());
             snakeBody.get(i).setY(snakeBody.get(i-1).getY());
@@ -258,6 +261,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
 
     private void growSnake()
     {
+        // add snake part
         SnakePart part = new SnakePart(250 + 14*snakeBody.size(),260,12,12);
         part.setFillColor(Color.GREEN);
         part.setFilled(true);
@@ -298,6 +302,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
             highestScore = Math.max(highestScore, score);
             highScoreLabel.setText("HIGH SCORE: "+highestScore);
 
+            // start creating barriers when reach 60 points
             if (score>=60) {
                 createGRect();
             }
@@ -377,6 +382,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
     }
 
     public void createGRect() {
+        //make sure that there aren't two rectBarriers at the same time on screen
         if (rectBarrier != null) {
             remove(rectBarrier);
         }
@@ -384,6 +390,7 @@ public class MainClass extends GraphicsProgram implements ActionListener
        rectBarrier  = new GRect(50,50,100,150);
         int randX=0;
         int randY=0;
+        //check that doesn't overlap w/ snake or food and isn't just og location
         while (overlapsWithSnake() || rectBarrier.getBounds().intersects(food.getBounds()) ||
                 (rectBarrier.getX()==50 && rectBarrier.getY()==50)) {
             randX = (int) (Math.random()*(getGCanvas().getWidth() - rectBarrier.getWidth()));
